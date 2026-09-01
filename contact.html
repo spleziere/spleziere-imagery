@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact – Spléziere Imagery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .page-wrapper{margin-top:140px;text-align:center;}
+    .contact-links-wrapper{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:30px;
+      margin-top:40px;
+    }
+    .contact-links{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:18px;
+    }
+    .contact-links a{
+      font-size:14px;
+      color:#111;
+      transition:color 0.25s ease;
+      letter-spacing:0.5px;
+    }
+    .contact-links a:hover{color:#f05a28;}
+    .legal-link{font-size:14px;letter-spacing:0.5px;}
+    .legal-link:hover{color:#f05a28;}
+    .legal-actions{
+      position:fixed;
+      right:5%;
+      bottom:28px;
+      display:flex;
+      align-items:center;
+      gap:18px;
+      z-index:2;
+    }
+    @media(max-width:640px){
+      .legal-actions{right:24px;bottom:20px;}
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div></div>
+      <div class="title">
+        <a href="index.html">Spléziere Imagery</a>
+      </div>
+      <nav class="right-nav">
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-wrapper">
+    <div class="contact-links-wrapper">
+      <div class="contact-links">
+        <a href="mailto:hi@spleziere.com">hi@spleziere.com</a>
+        <a href="https://instagram.com/spleziere" target="_blank">Instagram</a>
+      </div>
+      <div class="legal-actions">
+        <a class="legal-link" href="legal-notice.html">Legal Notice</a>
+        <a class="legal-link" href="privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

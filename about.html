@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>About</title>
+<link rel="stylesheet" href="css/style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+.page-wrapper {
+  margin-top: 140px;
+  text-align: center;
+}
+
+.network-title {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.network-text {
+  max-width: 580px;
+  margin: 50px auto 0 auto;
+  text-align: left;
+  font-size: 15px;
+  line-height: 1.8;
+
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+
+.network-text p {
+  margin-bottom: 18px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div></div>
+    <div class="title">
+      <a href="index.html">Spléziere Imagery</a>
+    </div>
+    <nav class="right-nav">
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="page-wrapper">
+
+  <div class="network-title" onclick="toggleNetwork()">
+    Spléziere Imagery <span id="networkPlus">+</span>
+  </div>
+
+  <div id="networkText" class="network-text">
+    <p>— an ongoing visual archive of analog and digital photography by René Kusnawijaya.
+          <p>
+In an age of AI-generated imagery, a human point of view and good taste still make the difference.
+    <p>
+Education:
+    <p>
+— Royal College of Art, London
+    <p>
+— ETSAS, Seville
+    <p>
+— TU Munich
+    <p>
+Available for prints and assignment enquiries.
+    <p>
+  </div>
+
+</main>
+
+<script>
+function toggleNetwork() {
+  const text = document.getElementById("networkText");
+  const plus = document.getElementById("networkPlus");
+
+  if (text.style.maxHeight && text.style.maxHeight !== "0px") {
+    text.style.maxHeight = "0px";
+    plus.textContent = "+";
+  } else {
+    text.style.maxHeight = text.scrollHeight + "px";
+    plus.textContent = "−";
+  }
+}
+</script>
+
+</body>
+</html>

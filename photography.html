@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Spléziere Imagery</title>
+<link rel="stylesheet" href="css/style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+/* ===== Photography Grid 5x4 ===== */
+.grid-5x4 {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: calc((100vh - 70px) / 4);
+  padding: 0;
+  min-height: calc(100vh - 70px);
+  margin: 0;
+
+}
+
+.grid-item {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: filter 0.3s ease;
+}
+
+.grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.grid-item:hover img {
+  transform: scale(1.05);
+}
+
+.scale-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0);
+  color: #f3f57f;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.grid-item:hover .scale-label {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+.grid-5x4:hover .grid-item {
+  filter: grayscale(60%);
+}
+
+.grid-5x4 .grid-item:hover {
+  filter: none;
+}
+
+@media(max-width:1200px){
+  .grid-5x4 {
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(220px, auto);
+  }
+}
+
+@media(max-width:768px){
+  .grid-5x4 {
+    grid-template-columns: 1fr;
+    grid-auto-rows: minmax(260px, auto);
+  }
+}
+
+/* ==========================================================
+   HEADER-FILTER — links, gleiche Zeile/Typografie wie About/Contact
+   Bewusst NICHT Teil von .header-inner: dadurch bleiben Titel
+   (mittig) und About/Contact (rechts) exakt wie im Original,
+   unabhängig von Viewport-Breite oder bestehenden Mobile-Regeln
+   in css/style.css. Der Filter wird frei über den Header gelegt.
+   Über GRID_CONTROLS_ENABLED (im Script unten) an-/ausschaltbar,
+   ohne die Grid-Struktur zu berühren.
+   ========================================================== */
+header{position:relative;}
+
+.header-filter{
+  position:absolute;
+  left:5%;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:32;
+}
+
+@media(max-width:640px){
+  .header-filter{left:4%;}
+}
+
+.filter-toggle{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  font-family:inherit;
+  font-size:13px;
+  background:none;
+  border:none;
+  outline:none;
+  color:#111;
+  padding:0;
+  cursor:pointer;
+  transition:color .2s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.filter-toggle:hover{color:#f05a28;}
+
+.filter-toggle .chevron{
+  width:9px;
+  height:9px;
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+}
+.filter-toggle.is-open .chevron{transform:rotate(180deg);}
+
+.filter-menu{
+  position:absolute;
+  top:calc(100% + 18px);
+  left:0;
+  min-width:150px;
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(16px) saturate(160%);
+  -webkit-backdrop-filter:blur(16px) saturate(160%);
+  box-shadow:0 14px 34px rgba(0,0,0,.10);
+  border-radius:10px;
+  padding:6px;
+  opacity:0;
+  transform:translateY(-6px) scale(.98);
+  pointer-events:none;
+  transition:opacity .25s cubic-bezier(.4,0,.2,1), transform .25s cubic-bezier(.4,0,.2,1);
+  z-index:31;
+}
+.filter-menu.is-open{
+  opacity:1;
+  transform:translateY(0) scale(1);
+  pointer-events:auto;
+}
+
+.filter-option{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  width:100%;
+  font-family:inherit;
+  font-size:12.5px;
+  letter-spacing:.02em;
+  text-align:left;
+  background:none;
+  border:none;
+  color:#666;
+  padding:9px 12px;
+  border-radius:6px;
+  cursor:pointer;
+  transition:background .2s ease, color .2s ease;
+}
+.filter-option:hover{background:rgba(0,0,0,.05); color:#111;}
+.filter-option.is-selected{color:#111; font-weight:600;}
+.filter-option .dot{
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:#111;
+  opacity:0;
+  transition:opacity .2s ease;
+  flex-shrink:0;
+}
+.filter-option.is-selected .dot{opacity:1;}
+
+.result-count{
+  display:none; /* Ausblenden, ohne Filter-Logik zu verändern */
+  width:90%;
+  margin:26px auto 8px;
+  font-size:11px;
+  color:#bbb;
+  letter-spacing:.03em;
+}
+
+/* Von der Filterlogik ausgeblendete Kacheln */
+.grid-item.is-filtered-out{display:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-filter">
+    <button type="button" class="filter-toggle" id="filter-toggle" aria-haspopup="listbox" aria-expanded="false">
+      <span id="filter-toggle-label">All</span>
+      <svg class="chevron" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div class="filter-menu" id="filter-menu" role="listbox">
+      <button type="button" class="filter-option is-selected" data-filter="all" role="option" aria-selected="true">
+        <span>All</span><span class="dot"></span>
+      </button>
+      <button type="button" class="filter-option" data-filter="architecture" role="option" aria-selected="false">
+        <span>Architecture</span><span class="dot"></span>
+      </button>
+      <button type="button" class="filter-option" data-filter="people" role="option" aria-selected="false">
+        <span>People</span><span class="dot"></span>
+      </button>
+      <button type="button" class="filter-option" data-filter="street" role="option" aria-selected="false">
+        <span>Street</span><span class="dot"></span>
+      </button>
+      <button type="button" class="filter-option" data-filter="fashion" role="option" aria-selected="false">
+        <span>Fashion</span><span class="dot"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="header-inner">
+    <div></div>
+    <div class="title"><a href="index.html">Spléziere Imagery</a></div>
+    <nav class="right-nav">
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<p class="result-count" id="result-count"></p>
+
+<main class="grid-5x4">
+  <!--
+    TODO: Bei jeder Kachel data-year="0000" durch das echte Jahr
+    und data-category="TODO" durch eine oder mehrere Kategorien
+    aus: architecture | people | street | fashion ersetzen
+    (mehrere Werte mit Leerzeichen trennen, z.B. "street architecture").
+  -->
+  <!-- Beispielhafte Bilder -->
+  <a href="photography-project-01.html" class="grid-item"
+     data-year="0000" data-category="TODO">
+    <img loading="lazy" src="images/photography/photo-01-01.jpg" alt="Photo Project 01">
+    <div class="scale-label">Project 01</div>
+  </a>
+  <a href="photography-project-02.html" class="grid-item"
+     data-year="0000" data-category="TODO">
+    <img loading="lazy" src="images/photography/photo-01-02.jpg" alt="Photo Project 02">
+    <div class="scale-label">Project 02</div>
+  </a>
+  <a href="photography-project-03-Lyne.html" class="grid-item"
+     data-year="2024" data-category="fashion">
+    <img loading="lazy" src="images/photography/photo-24-02.webp" alt="Photo Project 03">
+    <div class="scale-label">Lyne</div>
+  </a>
+  <a href="photography-project-04-Barbican.html" class="grid-item"
+     data-year="0000" data-category="street">
+    <img loading="lazy" src="images/photography/photo-27-01.jpg" alt="Photo Project 04">
+    <div class="scale-label">Barbican</div>
+  </a>
+  <a href="photography-project-05-Shenjin.html" class="grid-item"
+     data-year="0000" data-category="street">
+    <img loading="lazy" src="images/photography/photo-05-01.jpg" alt="Lavapiés">
+    <div class="scale-label">Shëngjin</div>
+  </a>
+    <a href="photography-project-06-Pompeii.html" class="grid-item"
+     data-year="0000" data-category="street">
+    <img loading="lazy" src="images/photography/photo-06-02.jpg" alt="Photo Project 01">
+    <div class="scale-label">Pompeii</div>
+  </a>
+  <a href="photography-project-07-Kuta Lombok .html" class="grid-item"
+     data-year="0000" data-category="TODO">
+    <img loading="lazy" src="images/photography/photo-26-06.JPG" alt="Photo Project 02">
+    <div class="scale-label">Project 07</div>
+  </a>
+  <a href="photography-project-08-Albania.html" class="grid-item"
+     data-year="0000" data-category="TODO">
+    <img loading="lazy" src="images/photography/photo-05-06.webp" alt="Photo Project 03">
+    <div class="scale-label">Project 08</div>
+  </a>
+  <a href="photography-project-09-NusaPenida.html" class="grid-item"
+     data-year="2019" data-category="street">
+    <img loading="lazy" src="images/photography/photo-03-04.jpg" alt="Photo Project 04">
+    <div class="scale-label">Project 09</div>
+  </a>
+  <a href="photography-project-10-paestum.html" class="grid-item"
+     data-year="0000" data-category="TODO">
+    <img loading="lazy" src="images/photography/photo-06-01.jpg" alt="Photo Project 05">
+    <div class="scale-label">Paestum</div>
+  </a>
+  <a href="photography-project-11-Sevilla.html" class="grid-item"
+     data-year="2018" data-category="street">
+    <img loading="lazy" src="images/photography/photo-07-01.jpg" alt="Photo Project 01">
+    <div class="scale-label">Project 11</div>
+  </a>
+  <a href="photography-project-12-Cascais.html" class="grid-item"
+     data-year="0000" data-category="TODO">
+    <img loading="lazy" src="images/photography/photo-08-01.jpg" alt="Photo Project 02">
+    <div class="scale-label">Project 12</div>
+  </a>
+  <a href="photography-project-13-Albania.html" class="grid-item"
+     data-year="2015" data-category="street">
+    <img loading="lazy" src="images/photography/photo-09.jpg" alt="Photo Project 03">
+    <div class="scale-label">Project 13</div>
+  </a>
+  <a href="photography-project-14-Sydney.html" class="grid-item"
+     data-year="0000" data-category="TODO">
+    <img loading="lazy" src="images/photography/photo-04-02.jpg" alt="Photography project">
+    <div class="scale-label">Project 14</div>
+  </a>
+  <a href="photography-project-15-Elmi.html" class="grid-item"
+     data-year="0000" data-category="TODO">
+    <img loading="lazy" src="images/photography/photo-11-01.jpg" alt="Photo Project 05">
+    <div class="scale-label">Project 15</div>
+  </a>
+    <a href="photography-project-16-Carmona.html" class="grid-item"
+     data-year="0000" data-category="street">
+    <img loading="lazy" src="images/photography/photo-12-01.jpg" alt="Photo Project 16">
+    <div class="scale-label">Carmona</div>
+  </a>
+  <a href="photography-project-17-Singapur.html" class="grid-item"
+     data-year="0000" data-category="architecture street">
+    <img loading="lazy" src="images/photography/photo-13-01.jpg" alt="Photo Project 02">
+    <div class="scale-label">Singapore</div>
+  </a>
+  <a href="photography-project-18-Papandayan.html" class="grid-item"
+     data-year="0000" data-category="street">
+    <img loading="lazy" src="images/photography/photo-23-01.webp" alt="Photo Project 03">
+    <div class="scale-label">Papandayan</div>
+  </a>
+  <a href="photography-project-19-Sevilla.html" class="grid-item"
+     data-year="0000" data-category="TODO">
+    <img loading="lazy" src="images/photography/photo-19-03.jpg" alt="Photo Project 04">
+    <div class="scale-label">Sevilla</div>
+  </a>
+  <a href="photography-project-20-Lavapie.html" class="grid-item"
+     data-year="0000" data-category="architecture">
+    <img loading="lazy" src="images/photography/photo-15-02.jpg" alt="Lavapiés">
+    <div class="scale-label">Lavapiés</div>
+  </a>
+    <a href="photography-project-21-x.html" class="grid-item"
+     data-year="0000" data-category="TODO">
+    <img loading="lazy" src="images/photography/photo-22-10.webp" alt="Photo Project 05">
+    <div class="scale-label">Project 10</div>
+  </a>
+  <a href="photography-project-22-x.html" class="grid-item"
+     data-year="0000" data-category="TODO">
+    <img loading="lazy" src="images/photography/photo-10-01.jpg" alt="Photo Project 01">
+    <div class="scale-label">calle</div>
+  </a>
+  <a href="photography-project-23-x.html" class="grid-item"
+     data-year="0000" data-category="people">
+    <img loading="lazy" src="images/photography/photo-04-04.jpg" alt="Photo Project 02">
+    <div class="scale-label">Project 12</div>
+  </a>
+  <a href="photography-project-24-Jagri.html" class="grid-item"
+     data-year="2023" data-category="people">
+    <img loading="lazy" src="images/photography/photo-21-04.webp" alt="Photo Project 03">
+    <div class="scale-label">Jagri</div>
+  </a>
+  <a href="photography-project-25-Lyne.html" class="grid-item"
+     data-year="2014" data-category="fashion">
+    <img loading="lazy" src="images/photography/photo-25-01.webp" alt="Photography project">
+    <div class="scale-label">Natura</div>
+  </a>
+  <a href="photography-project-26-x.html" class="grid-item"
+     data-year="0000" data-category="TODO">
+    <img loading="lazy" src="images/photography/photo-22-01.webp" alt="Photo Project 05">
+    <div class="scale-label">Project 26</div>
+  </a>
+    <a href="photography-project-27-Carmona.html" class="grid-item"
+     data-year="0000" data-category="street">
+    <img loading="lazy" src="images/photography/photo-22-09.webp" alt="Photo Project 16">
+    <div class="scale-label">Mangga</div>
+  </a>
+  <a href="photography-project-28-Singapur.html" class="grid-item"
+     data-year="0000" data-category="TODO">
+    <img loading="lazy" src="images/photography/photo-22-03.webp" alt="Photo Project 02">
+    <div class="scale-label">Singapore</div>
+  </a>
+  <a href="photography-project.html" class="grid-item"
+     data-year="0000" data-category="street">
+    <img loading="lazy" src="images/photography/photo-04-06.jpg" alt="Photo Project 03">
+    <div class="scale-label">Project 29</div>
+  </a>
+  <a href="photography-project-30-Sevilla.html" class="grid-item"
+     data-year="0000" data-category="TODO">
+    <img loading="lazy" src="images/photography/photo-28-01.webp" alt="Photo Project 04">
+    <div class="scale-label">Toledo</div>
+  </a>
+  <!-- weitere Fotos bis 5x4 -->
+</main>
+
+<script>
+(function () {
+
+  /* ============================================================
+     HAUPTSCHALTER
+     Auf "false" setzen, um den Header-Filter komplett zu
+     deaktivieren. Der Filter-Button und der Ergebniszähler werden
+     dann ausgeblendet, das Grid bleibt exakt so bestehen, wie es
+     im HTML steht — es wird kein Code aus diesem Block mehr
+     ausgeführt.
+     ============================================================ */
+  const GRID_CONTROLS_ENABLED = true;
+
+  const headerFilter = document.querySelector('.header-filter');
+  const resultCount = document.getElementById('result-count');
+
+  if (!GRID_CONTROLS_ENABLED) {
+    if (headerFilter) headerFilter.style.display = 'none';
+    if (resultCount) resultCount.style.display = 'none';
+    return; // Grid bleibt unangetastet, keine weitere Logik läuft.
+  }
+
+  const grid = document.querySelector('.grid-5x4');
+  const items = Array.from(grid.querySelectorAll('.grid-item'));
+
+  const filterToggle = document.getElementById('filter-toggle');
+  const filterToggleLabel = document.getElementById('filter-toggle-label');
+  const filterMenu = document.getElementById('filter-menu');
+  const filterOptions = Array.from(filterMenu.querySelectorAll('.filter-option'));
+
+  let activeFilter = 'all';
+
+  // --- FILTERN ---------------------------------------------------
+  function applyFilter() {
+    let visibleCount = 0;
+    items.forEach(item => {
+      const categories = (item.dataset.category || '').split(/\s+/);
+      const matches = activeFilter === 'all' || categories.includes(activeFilter);
+      item.classList.toggle('is-filtered-out', !matches);
+      if (matches) visibleCount++;
+    });
+    resultCount.textContent = visibleCount === items.length
+      ? `${items.length} projects`
+      : `${visibleCount} of ${items.length} projects`;
+  }
+
+  function closeFilterMenu() {
+    filterMenu.classList.remove('is-open');
+    filterToggle.classList.remove('is-open');
+    filterToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  filterToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = filterMenu.classList.toggle('is-open');
+    filterToggle.classList.toggle('is-open', isOpen);
+    filterToggle.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  filterOptions.forEach(opt => {
+    opt.addEventListener('click', () => {
+      filterOptions.forEach(o => { o.classList.remove('is-selected'); o.setAttribute('aria-selected', 'false'); });
+      opt.classList.add('is-selected');
+      opt.setAttribute('aria-selected', 'true');
+      activeFilter = opt.dataset.filter;
+      filterToggleLabel.textContent = opt.querySelector('span').textContent;
+      closeFilterMenu();
+      applyFilter();
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.header-filter')) closeFilterMenu();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeFilterMenu();
+  });
+
+  // Initialzustand
+  applyFilter();
+
+})();
+</script>
+
+</body>
+</html>
