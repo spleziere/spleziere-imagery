@@ -28,7 +28,46 @@
   </main>
 
   <!-- JS: Zufälliges Introbild -->
-  <script src="js/intro-random.js"></script>
+  <script>
+    const bilder = [
+      "images/photography/photo-01-01.jpg",
+      "images/photography/photo-01-02.jpg",
+      "images/photography/photo-01-03.jpg",
+      "images/photography/photo-02-01.jpg",
+      "images/photography/photo-02-02.jpg",
+      "images/photography/photo-02-03.jpg",
+      "images/photography/photo-02-04.jpg",
+      "images/photography/photo-02-05.jpg",
+      "images/photography/photo-02-06.jpg",
+      "images/photography/photo-03-01.jpg",
+      "images/photography/photo-03-02.jpg",
+      "images/photography/photo-03-03.jpg",
+      "images/photography/photo-04-01.jpg",
+      "images/photography/photo-04-02.jpg",
+      "images/photography/photo-04-04.jpg",
+      "images/photography/photo-04-05.jpg",
+      "images/photography/photo-05-01.jpg",
+      "images/photography/photo-05-02.jpg",
+      "images/photography/photo-05-03.jpg",
+      "images/photography/photo-05-04.jpg",
+      "images/photography/photo-11-01.jpg",
+      "images/photography/photo-24-01.webp",
+      "images/photography/photo-13-01.webp",
+      "images/photography/photo-13-02.webp",
+      "images/photography/photo-13-03.webp",
+      "images/photography/photo-13-04.webp",
+      "images/photography/photo-13-03.webp",
+      "images/photography/photo-22-10.webp",
+      "images/photography/photo-24-04.webp",
+    ];
+
+    const zufallsIndex = Math.floor(Math.random() * bilder.length);
+    const introImg = document.getElementById('introImage');
+    
+    if (introImg) {
+      introImg.src = bilder[zufallsIndex];
+    }
+  </script>
   
 </body>
 </html>
