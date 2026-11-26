@@ -155,7 +155,7 @@
 
   <!-- LEFT: MAIN IMAGE -->
   <div class="project-image" onclick="nextImage()">
-    <img id="mainImage" src="images/photography/photo-15-04.webp">
+    <img fetchpriority="high" decoding="async" id="mainImage" src="images/photography/web/photo-15-04.webp">
   </div>
 
   <!-- RIGHT: TEXT + PROJECT THUMBS -->
@@ -168,24 +168,24 @@
 
     <!-- ONLY CURRENT PROJECT IMAGES -->
     <div class="project-thumbs">
-      <img src="images/photography/photo-15-01.webp" onclick="setImage(0)">
-      <img src="images/photography/photo-15-02.webp" onclick="setImage(1)">
-      <img src="images/photography/photo-15-03.webp" onclick="setImage(2)">
-      <img src="images/photography/photo-15-04.webp" onclick="setImage(3)">
-      <img src="images/photography/photo-15-05.webp" onclick="setImage(4)">
-      <img src="images/photography/photo-15-06.webp" onclick="setImage(5)">
-      <img src="images/photography/photo-15-07.webp" onclick="setImage(6)">
-      <img src="images/photography/photo-15-08.jpg" onclick="setImage(7)">
+      <img decoding="async" loading="lazy" src="images/photography/thumb/photo-15-01.webp" onclick="setImage(0)">
+      <img decoding="async" loading="lazy" src="images/photography/thumb/photo-15-02.webp" onclick="setImage(1)">
+      <img decoding="async" loading="lazy" src="images/photography/thumb/photo-15-03.webp" onclick="setImage(2)">
+      <img decoding="async" loading="lazy" src="images/photography/thumb/photo-15-04.webp" onclick="setImage(3)">
+      <img decoding="async" loading="lazy" src="images/photography/thumb/photo-15-05.webp" onclick="setImage(4)">
+      <img decoding="async" loading="lazy" src="images/photography/thumb/photo-15-06.webp" onclick="setImage(5)">
+      <img decoding="async" loading="lazy" src="images/photography/thumb/photo-15-07.webp" onclick="setImage(6)">
+      <img decoding="async" loading="lazy" src="images/photography/thumb/photo-15-08.webp" onclick="setImage(7)">
     </div>
 
   </div>
 
   <!-- BACK TO PHOTOGRAPHY GRID -->
   <a href="photography.html" class="back-grid">
-      <img src="images/photography/photo-01-01.jpg" onclick="setImage(0)">
-      <img src="images/photography/photo-01-02.jpg" onclick="setImage(1)">
-      <img src="images/photography/photo-13-04.webp" onclick="setImage(2)">
-      <img src="images/photography/photo-04-04.jpg" onclick="setImage(3)">
+      <img decoding="async" loading="lazy" src="images/photography/thumb/photo-01-01.webp" onclick="setImage(0)">
+      <img decoding="async" loading="lazy" src="images/photography/thumb/photo-01-02.webp" onclick="setImage(1)">
+      <img decoding="async" loading="lazy" src="images/photography/thumb/photo-13-04.webp" onclick="setImage(2)">
+      <img decoding="async" loading="lazy" src="images/photography/thumb/photo-04-04.webp" onclick="setImage(3)">
 
   </a>
 
@@ -196,14 +196,14 @@
 /* IMAGE SWITCHING */
 
 const images = [
-  "images/photography/photo-15-01.webp",
-  "images/photography/photo-15-02.webp",
-  "images/photography/photo-15-03.webp",
-  "images/photography/photo-15-04.webp",
-  "images/photography/photo-15-05.webp",
-  "images/photography/photo-15-06.webp",
-  "images/photography/photo-15-07.webp",
-  "images/photography/photo-15-08.jpg"
+  "images/photography/web/photo-15-01.webp",
+  "images/photography/web/photo-15-02.webp",
+  "images/photography/web/photo-15-03.webp",
+  "images/photography/web/photo-15-04.webp",
+  "images/photography/web/photo-15-05.webp",
+  "images/photography/web/photo-15-06.webp",
+  "images/photography/web/photo-15-07.webp",
+  "images/photography/web/photo-15-08.webp"
 ];
 
 let index = 0;
