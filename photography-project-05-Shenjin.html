@@ -155,7 +155,7 @@
 
   <!-- LEFT: MAIN IMAGE -->
   <div class="project-image" onclick="nextImage()">
-    <img id="mainImage" src="images/photography/photo-05-01.jpg">
+    <img fetchpriority="high" decoding="async" id="mainImage" src="images/photography/web/photo-05-01.webp">
   </div>
 
   <!-- RIGHT: TEXT + PROJECT THUMBS -->
@@ -168,19 +168,19 @@
 
     <!-- ONLY CURRENT PROJECT IMAGES -->
     <div class="project-thumbs">
-      <img src="images/photography/photo-05-01.jpg" onclick="setImage(0)">
-      <img src="images/photography/photo-05-02.jpg" onclick="setImage(1)">
-      <img src="images/photography/photo-05-03.jpg" onclick="setImage(2)">
+      <img decoding="async" loading="lazy" src="images/photography/thumb/photo-05-01.webp" onclick="setImage(0)">
+      <img decoding="async" loading="lazy" src="images/photography/thumb/photo-05-02.webp" onclick="setImage(1)">
+      <img decoding="async" loading="lazy" src="images/photography/thumb/photo-05-03.webp" onclick="setImage(2)">
     </div>
 
   </div>
 
   <!-- BACK TO PHOTOGRAPHY GRID -->
   <a href="photography.html" class="back-grid">
-    <img src="images/photography/photo-05-06.webp">
-    <img src="images/photography/photo-01-01.jpg">
-    <img src="images/photography/photo-06-01.jpg">
-    <img src="images/photography/photo-07-01.jpg">
+    <img decoding="async" loading="lazy" src="images/photography/thumb/photo-05-06.webp">
+    <img decoding="async" loading="lazy" src="images/photography/thumb/photo-01-01.webp">
+    <img decoding="async" loading="lazy" src="images/photography/thumb/photo-06-01.webp">
+    <img decoding="async" loading="lazy" src="images/photography/thumb/photo-07-01.webp">
   </a>
 
 </main>
@@ -190,9 +190,9 @@
 /* IMAGE SWITCHING */
 
 const images = [
-  "images/photography/photo-05-01.jpg",
-  "images/photography/photo-05-02.jpg",
-  "images/photography/photo-05-03.jpg",
+  "images/photography/web/photo-05-01.webp",
+  "images/photography/web/photo-05-02.webp",
+  "images/photography/web/photo-05-03.webp",
 ];
 
 let index = 0;

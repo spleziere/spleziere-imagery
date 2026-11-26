@@ -155,7 +155,7 @@
 
   <!-- LEFT: MAIN IMAGE -->
   <div class="project-image" onclick="nextImage()">
-    <img id="mainImage" src="images/photography/photo-34-01.webp" alt="CaixaForum Madrid by Herzog &amp; de Meuron">
+    <img fetchpriority="high" decoding="async" id="mainImage" src="images/photography/web/photo-34-01.webp" alt="CaixaForum Madrid by Herzog &amp; de Meuron">
   </div>
 
   <!-- RIGHT: TEXT + PROJECT THUMBS -->
@@ -169,18 +169,18 @@
 
     <!-- ONLY CURRENT PROJECT IMAGES -->
     <div class="project-thumbs">
-      <img src="images/photography/photo-34-01.webp" alt="CaixaForum Madrid" onclick="setImage(0)">
-      <img src="images/photography/photo-34-02.webp" alt="Vertical garden by Patrick Blanc next to CaixaForum" onclick="setImage(1)">
+      <img decoding="async" loading="lazy" src="images/photography/thumb/photo-34-01.webp" alt="CaixaForum Madrid" onclick="setImage(0)">
+      <img decoding="async" loading="lazy" src="images/photography/thumb/photo-34-02.webp" alt="Vertical garden by Patrick Blanc next to CaixaForum" onclick="setImage(1)">
     </div>
 
   </div>
 
   <!-- BACK TO PHOTOGRAPHY GRID -->
   <a href="photography.html" class="back-grid">
-    <img src="images/photography/photo-13-01.webp">
-    <img src="images/photography/photo-13-02.webp">
-    <img src="images/photography/photo-13-03.webp">
-    <img src="images/photography/photo-13-04.webp">
+    <img decoding="async" loading="lazy" src="images/photography/thumb/photo-13-01.webp">
+    <img decoding="async" loading="lazy" src="images/photography/thumb/photo-13-02.webp">
+    <img decoding="async" loading="lazy" src="images/photography/thumb/photo-13-03.webp">
+    <img decoding="async" loading="lazy" src="images/photography/thumb/photo-13-04.webp">
   </a>
 
 </main>
@@ -190,8 +190,8 @@
 /* IMAGE SWITCHING */
 
 const images = [
-  "images/photography/photo-34-01.webp",
-  "images/photography/photo-34-02.webp"
+  "images/photography/web/photo-34-01.webp",
+  "images/photography/web/photo-34-02.webp"
 ];
 
 let index = 0;

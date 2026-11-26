@@ -155,7 +155,7 @@
 
   <!-- LEFT: MAIN IMAGE -->
   <div class="project-image" onclick="nextImage()">
-    <img id="mainImage" src="images/photography/photo-23-01.webp">
+    <img fetchpriority="high" decoding="async" id="mainImage" src="images/photography/web/photo-23-01.webp">
   </div>
 
   <!-- RIGHT: TEXT + PROJECT THUMBS -->
@@ -168,16 +168,16 @@
 
     <!-- ONLY CURRENT PROJECT IMAGES -->
     <div class="project-thumbs">
-      <img src="images/photography/photo-23-01.webp" onclick="setImage(0)">
+      <img decoding="async" loading="lazy" src="images/photography/thumb/photo-23-01.webp" onclick="setImage(0)">
 
   </div>
 
   <!-- BACK TO PHOTOGRAPHY GRID -->
   <a href="photography.html" class="back-grid">
-      <img src="images/photography/photo-01-01.jpg" onclick="setImage(0)">
-      <img src="images/photography/photo-01-02.jpg" onclick="setImage(1)">
-      <img src="images/photography/photo-04-04.jpg" onclick="setImage(2)">
-      <img src="images/photography/photo-13-04.webp" onclick="setImage(3)">
+      <img decoding="async" loading="lazy" src="images/photography/thumb/photo-01-01.webp" onclick="setImage(0)">
+      <img decoding="async" loading="lazy" src="images/photography/thumb/photo-01-02.webp" onclick="setImage(1)">
+      <img decoding="async" loading="lazy" src="images/photography/thumb/photo-04-04.webp" onclick="setImage(2)">
+      <img decoding="async" loading="lazy" src="images/photography/thumb/photo-13-04.webp" onclick="setImage(3)">
 
   </a>
 
@@ -188,7 +188,7 @@
 /* IMAGE SWITCHING */
 
 const images = [
-  "images/photography/photo-23-01.webp",
+  "images/photography/web/photo-23-01.webp",
 ];
 
 let index = 0;
